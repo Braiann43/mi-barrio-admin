@@ -2,15 +2,8 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/fireba
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, collection, onSnapshot, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// Pegá acá las mismas claves de tu archivo .env
-const firebaseConfig = {
-  apiKey: "AIzaSyDgo7rOYD6QXudkzuzSAwNO_YPiXI5-gqw",
-  authDomain: "mi-barrio-app-55e87.firebaseapp.com",
-  projectId: "mi-barrio-app-55e87",
-  storageBucket: "mi-barrio-app-55e87.firebasestorage.app",
-  messagingSenderId: "327371000510",
-  appId: "1:327371000510:web:47d7a3c5f67ef743e56cef"
-};
+
+import { firebaseConfig } from "./config.js";
 const ADMIN_EMAIL = "admin@mibarrio.com";
 
 const app = initializeApp(firebaseConfig);
