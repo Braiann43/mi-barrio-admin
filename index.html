@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel Admin - Mi Barrio</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- PANTALLA DE LOGIN ADMIN -->
+  <div id="login-section" class="login-container">
+    <div class="login-card">
+      <h1><span class="red">mi</span><span class="blue">barrio</span> Admin</h1>
+      <p>Ingresá con tus credenciales de administrador</p>
+      <form id="login-form">
+        <input type="email" id="admin-email" placeholder="Correo administrador" required />
+        <input type="password" id="admin-password" placeholder="Contraseña" required />
+        <button type="submit">Ingresar al Panel</button>
+        <p id="login-error" class="error-msg"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- PANEL PRINCIPAL -->
+  <div id="dashboard-section" class="dashboard hidden">
+    <header class="topbar">
+      <h2><span class="red">mi</span><span class="blue">barrio</span> | Gestión de Reportes</h2>
+      <button id="logout-btn" class="btn-secondary">Cerrar sesión</button>
+    </header>
+
+    <main class="container">
+      <!-- VISTA 1: TABLA DE USUARIOS -->
+      <section id="users-view">
+        <h3>Reportes de Usuarios</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Usuario</th>
+                <th>Email</th>
+                <th>Cantidad de reportes</th>
+                <th>Fecha de reporte</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="users-tbody">
+              <tr><td colspan="5">Cargando datos...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- VISTA 2: REPORTES DEL USUARIO SELECCIONADO -->
+      <section id="user-reports-view" class="hidden">
+        <button id="back-to-users" class="btn-back">← Volver a la lista de usuarios</button>
+        <h3 id="selected-user-title">Reportes del vecino</h3>
+        <div id="reports-grid" class="reports-grid"></div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
