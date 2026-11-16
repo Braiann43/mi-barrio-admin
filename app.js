@@ -99,7 +99,6 @@ function renderizarTablaUsuarios() {
     if (fechaMs > agrupados[uid].ultimoReporteMs) agrupados[uid].ultimoReporteMs = fechaMs;
   });
 
-  // Ordenar cronológicamente desde el primer reporte hasta el último
   const listaOrdenada = Object.values(agrupados).sort(
     (a, b) => a.primerReporteMs - b.primerReporteMs
   );
@@ -138,7 +137,7 @@ function renderizarTablaUsuarios() {
 function renderizarReportesDeUsuario(uid) {
   const delUsuario = todosLosReportes
     .filter((r) => (r.usuarioId || "anonimo") === uid)
-    .sort((a, b) => new Date(a.fecha).getTime() - new Date(b.fecha).getTime());
+    .sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime());
 
   const infoUsuario = mapaUsuarios[uid] || {};
   const nombre = infoUsuario.nombre || "Vecino";
@@ -152,20 +151,26 @@ function renderizarReportesDeUsuario(uid) {
     .map((rep) => {
       const estadoActual = rep.estado || "Pendiente";
       const fecha = new Date(rep.fecha).toLocaleString("es-AR");
+      
       const imgHtml = rep.foto
-        ? `<img src="${rep.foto}" alt="Foto reporte" />`
+        ? `<img src="${rep.foto}" alt="Foto reporte" style="width: 100%; height: 200px; object-fit: cover;" />`
         : `<div style="height:200px;background:#e5e7eb;display:flex;align-items:center;justify-content:center;color:#666;">Sin foto</div>`;
 
+      // CORRECCIÓN: Compatibilidad con la nueva estructura de base de datos
+      const tipoReporte = rep.tipo || rep.categoria || "Incidente";
+      const direccionTexto = rep.ubicacionTexto || (typeof rep.ubicacion === 'string' ? rep.ubicacion : "No especificada");
+
       return `
-        <div class="report-card">
+        <div class="report-card" style="border: 1px solid #ccc; border-radius: 8px; overflow: hidden; margin-bottom: 20px; background: #fff;">
           ${imgHtml}
-          <div class="report-body">
-            <small>${fecha}</small>
-            <p><strong>Ubicación:</strong> ${rep.ubicacion || "No especificada"}</p>
-            <p><strong>Antigüedad:</strong> ${rep.antiguedad || "-"}</p>
-            <p>${rep.descripcion || ""}</p>
-            <div class="status-controls">
-              <select id="select-${rep.id}">
+          <div class="report-body" style="padding: 15px;">
+            <small style="color: #666;">${fecha}</small>
+            <h4 style="margin: 5px 0; color: #1877F2;">${tipoReporte}</h4>
+            <p style="margin: 5px 0;"><strong>Ubicación:</strong> ${direccionTexto}</p>
+            <p style="margin: 5px 0;"><strong>Antigüedad:</strong> ${rep.antiguedad || "-"}</p>
+            <p style="margin: 10px 0; font-size: 14px; color: #444;">${rep.descripcion || ""}</p>
+            <div class="status-controls" style="margin-top: 15px; display: flex; gap: 10px;">
+              <select id="select-${rep.id}" style="flex: 1; padding: 5px;">
                 <option value="Pendiente" ${estadoActual === "Pendiente" ? "selected" : ""}>Pendiente</option>
                 <option value="En proceso" ${estadoActual === "En proceso" ? "selected" : ""}>En proceso</option>
                 <option value="Solucionado" ${estadoActual === "Solucionado" ? "selected" : ""}>Solucionado</option>
