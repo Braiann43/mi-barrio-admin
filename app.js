@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, collection, onSnapshot, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
+import { getFirestore, collection, onSnapshot, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 import { firebaseConfig } from "./config.js";
 const ADMIN_EMAIL = "admin@mibarrio.com";
@@ -9,7 +9,6 @@ const ADMIN_EMAIL = "admin@mibarrio.com";
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-
 let todosLosReportes = [];
 let mapaUsuarios = {};
 let usuarioSeleccionadoId = null;
@@ -143,7 +142,7 @@ function renderizarReportesDeUsuario(uid) {
 
   const infoUsuario = mapaUsuarios[uid] || {};
   const nombre = infoUsuario.nombre || "Vecino";
-  const email = infoUsuario.email || delUsuario[0]?.emailUsuario || "";
+  
 
   selectedUserTitle.textContent = email
     ? `Reportes de ${nombre} (${email})`
@@ -169,9 +168,10 @@ function renderizarReportesDeUsuario(uid) {
               <select id="select-${rep.id}">
                 <option value="Pendiente" ${estadoActual === "Pendiente" ? "selected" : ""}>Pendiente</option>
                 <option value="En proceso" ${estadoActual === "En proceso" ? "selected" : ""}>En proceso</option>
-                <option value="Solicitado" ${estadoActual === "Solicitado" ? "selected" : ""}>Solicitado</option>
+                <option value="Solucionado" ${estadoActual === "Solucionado" ? "selected" : ""}>Solucionado</option>
               </select>
               <button onclick="guardarEstado('${rep.id}')">Guardar</button>
+              <button class="btn-eliminar" onclick="eliminarReporte('${rep.id}')">Borrar</button>
             </div>
           </div>
         </div>
@@ -188,5 +188,16 @@ window.guardarEstado = async (reporteId) => {
   } catch (err) {
     console.error(err);
     alert("Error al actualizar el estado.");
+  }
+};
+
+window.eliminarReporte = async (reporteId) => {
+  if (!confirm("¿Estás seguro de que querés eliminar este reporte de forma permanente?")) return;
+  try {
+    await deleteDoc(doc(db, "reportes", reporteId));
+    alert("Reporte eliminado correctamente.");
+  } catch (err) {
+    console.error(err);
+    alert("Error al eliminar el reporte.");
   }
 };
