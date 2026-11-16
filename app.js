@@ -141,7 +141,7 @@ function renderizarReportesDeUsuario(uid) {
 
   const infoUsuario = mapaUsuarios[uid] || {};
   const nombre = infoUsuario.nombre || "Vecino";
-  
+  const email = infoUsuario.email || delUsuario[0]?.emailUsuario || "";
 
   selectedUserTitle.textContent = email
     ? `Reportes de ${nombre} (${email})`
@@ -156,7 +156,6 @@ function renderizarReportesDeUsuario(uid) {
         ? `<img src="${rep.foto}" alt="Foto reporte" style="width: 100%; height: 200px; object-fit: cover;" />`
         : `<div style="height:200px;background:#e5e7eb;display:flex;align-items:center;justify-content:center;color:#666;">Sin foto</div>`;
 
-      // CORRECCIÓN: Compatibilidad con la nueva estructura de base de datos
       const tipoReporte = rep.tipo || rep.categoria || "Incidente";
       const direccionTexto = rep.ubicacionTexto || (typeof rep.ubicacion === 'string' ? rep.ubicacion : "No especificada");
 
