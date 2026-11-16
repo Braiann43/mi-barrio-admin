@@ -169,7 +169,7 @@ function renderizarReportesDeUsuario(uid) {
               <select id="select-${rep.id}">
                 <option value="Pendiente" ${estadoActual === "Pendiente" ? "selected" : ""}>Pendiente</option>
                 <option value="En proceso" ${estadoActual === "En proceso" ? "selected" : ""}>En proceso</option>
-                <option value="Solicitado" ${estadoActual === "Solicitado" ? "selected" : ""}>Solicitado</option>
+                <option value="Solucionado" ${estadoActual === "Solucionado" ? "selected" : ""}>Solicitado</option>
               </select>
               <button onclick="guardarEstado('${rep.id}')">Guardar</button>
             </div>
